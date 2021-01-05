@@ -1,5 +1,7 @@
 const Helpers = require('../utils/helpers');
 
+
+//1ste test
 describe('string test', () => {
     test('if there is a value in the string', () => {
         expect(Helpers.checkTitle()).toBeFalsy();
