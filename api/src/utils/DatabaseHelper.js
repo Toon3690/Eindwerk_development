@@ -10,48 +10,45 @@ const pg = require('knex')({
 
 const DatabaseHelper = {
     async initialiseTables() {
-        await pg.schema.hasTable('xs').then(async (exists) => {
-                if (!exists) {
-                    await pg.schema
-                        .createTable('xs', (table) => {
-                            table.increments();
-                            table.uuid('uuid');
-                            table.string('xWaarde');
-                            table.string('yWaarde');
-                            table.timestamps(true, true);
-                        })
-                        .then(async () => {
-                            console.log('created xs');
-                        });
-                } else {
-                    console.log("xs already created");
-                }
-            }),
+        await pg.schema.hasTable('measurements').then(async (exists) => {
+            if (!exists) {
+                await pg.schema
+                    .createTable('measurements', (table) => {
+                        table.increments();
+                        table.uuid('uuid');
+                        table.json('xWaarde');
+                        table.json('yWaarde');
+                        table.string('session_id');
+
+                        table.timestamps(true, true);
+                    })
+                    .then(async () => {
+                        console.log('created measurements');
+                    });
+            } else {
+                console.log("measurements already created");
+            }
+        });
 
 
-            await pg.schema.hasTable('ys').then(async (exists) => {
-                if (!exists) {
-                    await pg.schema
-                        .createTable('ys', (table) => {
-                            table.increments();
-                            table.uuid('uuid');
-                            table.timestamps(true, true);
-                        })
-                        .then(async () => {
-                            console.log('created ys');
-                            for (let i = 0; i < 10; i++) {
-                                const uuid = Helpers.generateUUID();
-                                await pg.table('ys').insert({
-                                    uuid,
-                                    title: `random element number ${i}`
-                                })
-                            }
-                        });
+        await pg.schema.hasTable('sessions').then(async (exists) => {
+            if (!exists) {
+                await pg.schema
+                    .createTable('sessions', (table) => {
+                        table.increments();
+                        table.uuid('uuid');
+                        table.string('handle');
+                        table.string('session_id');
+                        table.timestamps(true, true);
+                    })
+                    .then(async () => {
+                        console.log('created sessions');
+                    });
 
-                } else {
-                    console.log("ys already created");
-                }
-            })
+            } else {
+                console.log("sessions already created");
+            }
+        });
     }
 }
 
