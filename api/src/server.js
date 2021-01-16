@@ -3,10 +3,9 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const Helpers = require('./utils/helpers.js');
 const DatabaseHelper = require('./utils/DatabaseHelper');
+const port = 3100;
 
-const port = 3000;
 
-const data = require('./data.json');
 
 const pg = require('knex')({
     client: 'pg',
@@ -16,8 +15,11 @@ const pg = require('knex')({
 });
 
 
+DatabaseHelper.initialiseTables();
+
 const app = express();
 http.Server(app);
+
 
 app.use(bodyParser.json());
 app.use(
@@ -29,70 +31,138 @@ app.use(
 
 
 
+
+
+
 /**
- * Endpoints for xs
+ * Get all the sessions and the data from it
+ * @params: none
+ * @ returns: all the sessions
+ */
+app.get('/sessions', async (req, res) => {
+    // for each session: get all values
+    const result = await pg
+        .select('*')
+        .from('sessions')
+    if (result) {
+        res.json({
+            res: result
+        })
+    } else {
+        res.send(400)
+    }
+});
+
+
+
+/**
+ * Get one session and the data from it
+ * @params: uuid
+ * @ returns: 1 session
+ */
+app.get('/sessions/:uuid', async (req, res) => {
+
+    // check if uuid is valid
+    if (Helpers.validateUUID) {
+        const result = await pg
+            .select('*')
+            .from('sessions')
+            .where({
+                uuid: req.params.uuid
+            });
+        //.where(req.params)
+        res.json({
+            res: result
+        })
+    } else {
+        res.send(400)
+    }
+
+});
+
+
+
+/**
+ * POST or create a session
+ * @params: uuid, handle
+ * @ returns: uuid
+ */
+/* app.post('/sessions', async (req, res) => {
+
+    // Generate uuid
+    const uuid = Helpers.generateUUID();
+
+    const result = await pg
+        .insert({
+            uuid: uuid,
+            handle: req.body.handle,
+        })
+        .table("sessions")
+        .then(() => {
+            res.status(201);
+            res.json({
+                uuid: uuid
+            });
+        }).catch((e) => {
+            console.log(e)
+            res.status(400);
+        })
+}); */
+
+/**
+ * POST or create measurements
+ * @params:
+ * @ returns: 
  */
 
-app.get('/xs', async (req, res) => {
-    const result = await pg
-        .select(['uuid', 'xWaarde', 'yWaarde'])
-        .from('xs')
-    res.json({
-        res: result
-    })
-});
 
 
-//Pak uuid
-const UUID = Helpers.generateUUID();
 
+/**
+ * PATCH or update session
+ * @params: 
+ * @ returns: 
+ */
 
-// Post new record
-/* app.post('/xs', async (req, res) => {
+/*  app.patch('/sessions/:uuid', async (req, res, done) => {
 
     const result = await pg
-        .table('xs')
-        .insert({
+      .update(req.body)
+      .from('sessions')
+      .where({uuid: req.params.uuid})
+      .returning('*')
+      .then((res) => {
+        res.sendStatus(200)
+        res.json({
+            res: result
+          })
+      })
+  }) */
 
-            uuid: UUID,
-            xWaarde: 2
 
-        }).then(async () => {
-            console.log("succes");
-            for (let i = 0; i < 34; i++) {
-                const uuid = Helpers.generateUUID();
-                await pg.table('xs').insert({
-                    uuid,
-                    xWaarde: data.data[0].xs[i]
-                })
-            }
-        });
-}) */
 
-// Post new record
-app.post('/xs', async (req, res) => {
 
+/**
+ * DELETE a session
+ * @params:
+ * @ returns:
+ */
+/* app.delete('/sessions/:uuid', async (req, res) => {
     const result = await pg
-        .table('xs')
-        .insert({
-            uuid: UUID,
-            xWaarde: 2,
-            yWaarde: 3
-
-        }).then(async () => {
-            console.log("succes");
-        });
-})
-
-//get specific xs with uuid
-app.get("/xs/:uuid", async (req, res) => {
-    const result = await pg
-        .select(["uuid", "xWaarde", "yWaarde"])
-        .from("xs")
+        .from('sessions')
         .where({
             uuid: req.params.uuid
+        })
+        .del('*')
+        .then((res) => {
+            res.sendStatus(200)
         });
-    res.json({
-        res: result,
-    });
-});
+    console.log(result);
+}); */
+
+
+/* if (process.env.NODE_ENV !== 'test') {
+    app.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}`))
+} */
+
+module.exports = app, pg;
