@@ -5,7 +5,7 @@ const Helpers = require('./utils/helpers.js');
 const DatabaseHelper = require('./utils/DatabaseHelper');
 const port = 3100;
 
-
+const values = require("../src/data");
 
 
 const pg = require('knex')({

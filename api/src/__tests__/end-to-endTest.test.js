@@ -11,6 +11,8 @@ const httpETE = require('http');
 
 const db = require('../server');
 
+
+
 const appETE = require('../server');
 const requestETE = supertestETE(appETE);
 
@@ -26,6 +28,7 @@ describe('test end-to-end', () => {
         expect(response.status).toBe(201)
         expect(response.body).toHaveProperty("uuid")
         ETE_uuid = response.body.uuid
+
         console.log(ETE_uuid);
         done();
     })
