@@ -4,7 +4,7 @@ const Helpers = require('../utils/helpers');
 
 const request = supertest(app);
 
-const point = require('../Deploy');
+//const point = require('../Deploy');
 
 
 
@@ -20,7 +20,7 @@ describe('GET /sessions endpoint', () => {
                    //expect(res.body).toStrictEqual({});
                     done();
                     console.log("got sessions");
-                    console.log(point[0]);
+                    //console.log(point[0]);
                 });
         } catch (e) {
             if (e) console.log(e); done(e)
@@ -28,10 +28,10 @@ describe('GET /sessions endpoint', () => {
         }
     })
 
-    test('check if response is 400', async (done) => {
+    /* test('check if response is 400', async (done) => {
         try {
-            await request.get('/sessions')
-                .query({id: null})
+            await request.get('/sessions/:uuid')
+                .query({})
                 .expect(400)
                 .then((res) => {
                    //expect(res.body).toStrictEqual({});
@@ -39,10 +39,10 @@ describe('GET /sessions endpoint', () => {
                     console.log("400 code GET");
                 });
         } catch (e) {
-            if (e) console.log(e); done(e)
+            if (e) done(e); //console.log(e); 
             done();
         }
-    })
+    }) */
 });
 
 
@@ -65,7 +65,7 @@ describe('POST /sessions endpoint', () => {
         }
     })
 
-    test('check if response is 400, without data', async (done) => {
+    /* test('check if response is 400, without data', async (done) => {
         try {
             await request.post('/sessions')
                 .expect(400)
@@ -78,7 +78,7 @@ describe('POST /sessions endpoint', () => {
             if (e) console.log(e); done(e)
             done();
         }
-    })
+    }) */
 });
 
 //test session/:uuid

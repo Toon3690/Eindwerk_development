@@ -64,21 +64,21 @@ app.get('/sessions', async (req, res) => {
 app.get('/sessions/:uuid', async (req, res) => {
 
     // check if uuid is valid
-    if (Helpers.validateUUID) {
-        const result = await pg
-            .select('*')
-            .from('sessions')
-            .where({
-                uuid: req.params.uuid
-            });
-        //.where(req.params)
+
+    const result = await pg
+        .select('*')
+        .from('sessions')
+        .where({
+            uuid: req.params.uuid
+        });
+    //.where(req.params)
+    if (result) {
         res.json({
             res: result
         })
     } else {
-        res.send(400)
+        res.status(400)
     }
-
 });
 
 
@@ -99,15 +99,20 @@ app.post('/sessions', async (req, res) => {
             handle: req.body.handle,
         })
         .table("sessions")
+        //.returning('*')
         .then(() => {
             res.status(201);
             res.json({
                 uuid: uuid
             });
-        }).catch((e) => {
-            console.log(e)
+
+
+        });
+
+    /*     .catch((e) => {
+            //console.log(e)
             res.status(400);
-        })
+        }) */
 });
 
 /**
@@ -118,27 +123,29 @@ app.post('/sessions', async (req, res) => {
 
 
 
-
 /**
  * PATCH or update session
  * @params: 
  * @ returns: 
  */
 
-/*  app.patch('/sessions/:uuid', async (req, res, done) => {
+app.patch('/sessions/:uuid', async (req, res, done) => {
 
     const result = await pg
-      .update(req.body)
-      .from('sessions')
-      .where({uuid: req.params.uuid})
-      .returning('*')
-      .then((res) => {
-        res.sendStatus(200)
+        .update(req.body)
+        .from('sessions')
+        .where({
+            uuid: req.params.uuid
+        })
+        .returning('*')
+    if (result) {
         res.json({
             res: result
-          })
-      })
-  }) */
+        })
+    } else {
+        res.status(400)
+    }
+})
 
 
 
@@ -148,18 +155,20 @@ app.post('/sessions', async (req, res) => {
  * @params:
  * @ returns:
  */
-/* app.delete('/sessions/:uuid', async (req, res) => {
+app.delete('/sessions/:uuid', async (req, res) => {
     const result = await pg
         .from('sessions')
         .where({
             uuid: req.params.uuid
         })
         .del('*')
-        .then((res) => {
-            res.sendStatus(200)
+
+        .then(() => {
+            res.status(200);
         });
-    console.log(result);
-}); */
+
+    //console.log(result);
+});
 
 
 

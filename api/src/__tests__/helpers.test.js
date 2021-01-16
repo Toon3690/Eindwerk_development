@@ -11,10 +11,10 @@ describe('uuid validator test', () => {
     });
 });
 
-describe('xWaarde test', () => {
+/* describe('xWaarde test', () => {
     test('test if xWaarde is valid', () => {
         expect(Helpers.checkX(628)).toBeTruthy();
         expect(Helpers.checkX(642)).toBeFalsy();
         expect(Helpers.checkX("5a")).toBeFalsy();
     })
-});
+}); */
