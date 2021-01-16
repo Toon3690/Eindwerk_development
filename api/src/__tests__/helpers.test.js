@@ -1,15 +1,20 @@
 const Helpers = require('../utils/helpers');
 
+describe('uuid validator test', () => {
+    test('test if it is a string and test if string is not empty', () => {
+        expect(Helpers.validateUUID("54321")).toBeTruthy();
+        expect(Helpers.validateUUID("")).toBeFalsy();
+    });
+    test('test if an empty string', () => {
+        expect(Helpers.validateUUID("54321")).toBeTruthy();
+        expect(Helpers.validateUUID("")).toBeFalsy();
+    });
+});
 
-//1ste test
-describe('string test', () => {
-    test('if there is a value in the string', () => {
-        expect(Helpers.checkTitle()).toBeFalsy();
-        //expect(Helpers.checkTitle([]).toBeFalsy());
-    }),
-    test('if string has not more than 100 characters', () => {
-        expect(Helpers.checkTitle("Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standa")).toBeTruthy();
-        expect(Helpers.checkTitle("Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaa")).toBeFalsy();
-        expect(Helpers.checkTitle("lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen. Lorem Ipsum is de standaa")).toBeFalsy();
+describe('xWaarde test', () => {
+    test('test if xWaarde is valid', () => {
+        expect(Helpers.checkX(628)).toBeTruthy();
+        expect(Helpers.checkX(642)).toBeFalsy();
+        expect(Helpers.checkX("5a")).toBeFalsy();
     })
-})
+});
