@@ -52,7 +52,7 @@ describe('POST /sessions endpoint', () => {
             await request.post('/sessions')
                 //.send({ data: []})
                  .send({
-                    "handle": 5
+                    "feedback": "crooked"
                 }) 
                 .expect(201)
                 .then((res) => {
@@ -114,5 +114,4 @@ describe('POST /sessions endpoint', () => {
         }
     }); */
 //}); 
-
 

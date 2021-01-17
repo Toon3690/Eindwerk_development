@@ -37,12 +37,17 @@ const DatabaseHelper = {
                     .createTable('sessions', (table) => {
                         table.increments();
                         table.uuid('uuid');
-                        table.string('handle');
-                        table.string('session_id');
+                        table.string('feedback');
                         table.timestamps(true, true);
                     })
                     .then(async () => {
                         console.log('created sessions');
+                        const uuid = Helpers.generateUUID();
+
+                        await pg.table('sessions').insert([
+                            {uuid, feedback: `good` },
+                            {uuid, feedback: `bad` },
+                        ]);
                     });
 
             } else {

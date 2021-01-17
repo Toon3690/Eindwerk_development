@@ -55,6 +55,23 @@ app.get('/sessions', async (req, res) => {
 });
 
 
+app.get('/measurements', async (req, res) => {
+    // for each session: get all values
+    const result = await pg
+        .select('*')
+        .from('measurements')
+    if (result) {
+        res.json({
+            res: result
+        })
+    } else {
+        res.send(400)
+    }
+});
+
+
+
+
 
 /**
  * Get one session and the data from it
@@ -82,6 +99,32 @@ app.get('/sessions/:uuid', async (req, res) => {
 });
 
 
+app.get('/measurements/:uuid', async (req, res) => {
+
+    // check if uuid is valid
+    const result = await pg
+        .select('*')
+        .from('measurements')
+        .where({
+            uuid: req.params.uuid
+        });
+    //.where(req.params)
+    if (result) {
+        res.json({
+            res: result
+        })
+    } else {
+        res.status(400)
+    }
+});
+
+
+
+
+
+
+
+
 
 /**
  * POST or create a session
@@ -96,7 +139,7 @@ app.post('/sessions', async (req, res) => {
     const result = await pg
         .insert({
             uuid: uuid,
-            handle: req.body.handle,
+            feedback: req.body.feedback,
         })
         .table("sessions")
         //.returning('*')
@@ -105,8 +148,6 @@ app.post('/sessions', async (req, res) => {
             res.json({
                 uuid: uuid
             });
-
-
         });
 
     /*     .catch((e) => {
@@ -120,7 +161,32 @@ app.post('/sessions', async (req, res) => {
  * @params:
  * @ returns: 
  */
+app.post('/measurements', async (req, res) => {
 
+    // Generate uuid
+    const uuid = Helpers.generateUUID();
+
+    const result = await pg
+        .insert({
+            uuid: uuid,
+            xWaarde: req.body.xWaarde,
+            yWaarde: req.body.yWaarde,
+            session_id: Helpers.checkPosture(req.body.xWaarde, req.body.yWaarde)
+        })
+        .table("measurements")
+        //.returning('*')
+        .then(() => {
+            res.status(201);
+            res.json({
+                uuid: uuid
+            });
+        });
+
+    /*     .catch((e) => {
+            //console.log(e)
+            res.status(400);
+        }) */
+});
 
 
 /**
@@ -134,6 +200,24 @@ app.patch('/sessions/:uuid', async (req, res, done) => {
     const result = await pg
         .update(req.body)
         .from('sessions')
+        .where({
+            uuid: req.params.uuid
+        })
+        .returning('*')
+    if (result) {
+        res.json({
+            res: result
+        })
+    } else {
+        res.status(400)
+    }
+})
+
+app.patch('/measurements/:uuid', async (req, res, done) => {
+
+    const result = await pg
+        .update(req.body)
+        .from('measurements')
         .where({
             uuid: req.params.uuid
         })
