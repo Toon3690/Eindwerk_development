@@ -9,10 +9,14 @@ const Helpers = {
   },
 
   validateUUID: (uuid) => {
-    if (uuid.length > 0 && typeof uuid === 'string') {
-      return true
-    } else {
+    if (uuid == undefined) {
       return false
+    } else {
+      if (uuid.length > 0 && typeof uuid == uuid) {
+        return true
+      } else {
+        return false
+      }
     }
 
   },
@@ -26,35 +30,18 @@ const Helpers = {
   },
 
   checkPosture: (xWaarde, yWaarde) => {
-    if (xWaarde < 320 && yWaarde < 240) {
+    if (xWaarde < 320 && xWaarde >= 0 && yWaarde < 240 && yWaarde >= 0) {
       return 1
-    }else if (xWaarde < 320 && yWaarde >= 240) {
+    } else if (xWaarde < 320 && xWaarde >= 0 && yWaarde >= 240 && yWaarde <= 480) {
       return 2
-    }else if (xWaarde >= 320 && yWaarde < 240) {
+    } else if (xWaarde >= 320 && xWaarde <= 640 && yWaarde < 240  && yWaarde >= 0) {
       return 3
-    }else if (xWaarde >= 320 && yWaarde >= 240) {
+    } else if (xWaarde >= 320 && xWaarde <= 640 && yWaarde >= 240 && yWaarde <= 480) {
       return 4
-    }else{
+    } else {
       return 5
     }
   },
-
-
-  /*   checkX: (xWaarde) => {
-      if(xWaarde > 0 && xWaarde < 640 && typeof xWaarde !== 'string'){
-        return true
-      }else{
-        return false
-      }
-    }, */
-
-  /*   checkY: (yWaarde) => {
-      if(yWaarde > 0 && yWaarde < 480){
-        return true
-      }else{
-        return false
-      }
-    }, */
 
 
   /*   sanitiseData: (data) => {

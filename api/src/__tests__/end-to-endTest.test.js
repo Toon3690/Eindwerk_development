@@ -21,6 +21,8 @@ const DatabaseHelperETE = require('../utils/DatabaseHelper');
 
 let ETE_uuid;
 
+//jest.setTimeout(5001);
+
 describe('test end-to-end sessions', () => {
 
     // CREATE SESSION
@@ -34,13 +36,13 @@ describe('test end-to-end sessions', () => {
         done();
     })
 
-   test('if it exists', async (done) =>{
-        console.log(DatabaseHelperETE);
+/*    test('if it exists', async (done) =>{
+        //console.log(DatabaseHelperETE);
         //const response = await DatabaseHelperETE.select('*').table('sessions').where({ uuid: ETE_uuid})
         //expect(response.length).toBeGreaterThan(0);
         //expect(response[0].toHaveProperty('uuid', ETE_uuid));
         done();
-    })
+    }) */
 
     test('if get request succeeds', async (done) =>{
         const response = await requestETE.get(`/sessions/${ETE_uuid}`).send(ETE_uuid)
@@ -50,7 +52,7 @@ describe('test end-to-end sessions', () => {
     })
 
     // PATCH or UPDATE
-/    test('if patch request succeeds', async (done) =>{
+    test('if patch request succeeds', async (done) =>{
         const response = await requestETE.patch(`/sessions/${ETE_uuid}`).send({ feedback: "disaster" })
         expect(response.status).toBe(200)
         expect(response.body.res[0]).toHaveProperty("uuid")
@@ -74,7 +76,7 @@ describe('test end-to-end sessions', () => {
     })  
 
     // DELETE
-    /* test('if delete request succeeds', async (done) =>{
+    /*s test('if delete request succeeds', async (done) =>{
         const response = await requestETE.delete(`/sessions/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
         done();
@@ -91,7 +93,7 @@ describe('test end-to-end sessions', () => {
         expect(response.status).toBe(404);
         done();
     })  */
-})
+});
 
 describe('test end-to-end measurements', () => {
 
@@ -102,20 +104,13 @@ describe('test end-to-end measurements', () => {
         expect(response.body).toHaveProperty("uuid")
         ETE_uuid = response.body.uuid
 
-        console.log(ETE_uuid);
+        //console.log(ETE_uuid);
         done();
     })
-
-    test('if it exists', async (done) =>{
-        console.log(DatabaseHelperETE);
-        //const response = await DatabaseHelperETE.select('*').table('sessions').where({ uuid: ETE_uuid})
-        //expect(response.length).toBeGreaterThan(0);
-        //expect(response[0].toHaveProperty('uuid', ETE_uuid));
-        done();
-    })
-
+    
     test('if get request succeeds', async (done) =>{
-        const response = await requestETE.get(`/measurements/${ETE_uuid}`).send(ETE_uuid)
+        //await page.waitForSelector('.Foo', { timeout: 5000 });
+        const response = await requestETE.get(`/measurements/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
         expect(response.body.res[0]).toHaveProperty("uuid")
         done();
@@ -123,11 +118,18 @@ describe('test end-to-end measurements', () => {
 
     // PATCH or UPDATE
     test('if patch request succeeds', async (done) =>{
-        const response = await requestETE.patch(`/measurements/${ETE_uuid}`).send({xWaarde: values[0][2].x, yWaarde: values[0][2].y, session_id: HelpersETE.checkPosture(req.body.xWaarde, req.body.yWaarde)})
+        const response = await requestETE.patch(`/measurements/${ETE_uuid}`).send({xWaarde: values[0][2].x, yWaarde: values[0][2].y, session_id: HelpersETE.checkPosture(values[0][2].x, values[0][2].y)})
         expect(response.status).toBe(200)
         expect(response.body.res[0]).toHaveProperty("uuid")
         expect(response.body.res[0]).toHaveProperty("xWaarde", values[0][2].x)
         expect(response.body.res[0]).toHaveProperty("yWaarde", values[0][2].y)
+        expect(response.body.res[0]).toHaveProperty("session_id", "1")
+        done();
+    })
+
+    test('if patch request fails', async (done) =>{
+        const response = await requestETE.patch(`/measurements`).send({xWaarde: values[0][2].x, yWaarde: values[0][2].y, session_id: HelpersETE.checkPosture(values[0][2].x, values[0][2].y)})
+        expect(response.status).toBe(404)
         done();
     })
 
@@ -138,17 +140,19 @@ describe('test end-to-end measurements', () => {
         done();
     })
 */
-/*     test('if get request has change', async (done) =>{
-        const response = await requestETE.get(`/sessions/${ETE_uuid}`).send()
+     test('if get request has change', async (done) =>{
+        const response = await requestETE.get(`/measurements/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
         expect(response.body.res[0]).toHaveProperty("uuid")
-        expect(response.body.res[0]).toHaveProperty("feedback", "disaster")
+        expect(response.body.res[0]).toHaveProperty("xWaarde", values[0][2].x)
+        expect(response.body.res[0]).toHaveProperty("yWaarde", values[0][2].y)
+        expect(response.body.res[0]).toHaveProperty("session_id", "1")
         done();
-    })   */
+    })   
 
     // DELETE
-    /* test('if delete request succeeds', async (done) =>{
-        const response = await requestETE.delete(`/sessions/${ETE_uuid}`).send()
+     test('if delete request succeeds', async (done) =>{
+        const response = await requestETE.delete(`/measurements/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
         done();
     })
@@ -159,10 +163,11 @@ describe('test end-to-end measurements', () => {
         done();
     })
 
-    test('if GET request fails', async (done) =>{
-        const response = await requestETE.get(`/sessions/${ETE_uuid}`).send()
-        expect(response.status).toBe(404);
+    test('if GET request is undefined', async (done) =>{
+        const response = await requestETE.get(`/measurements/${ETE_uuid}`).send()
+        expect(response.status).toBe(200);
+        expect(response.body.res[0]).toBeUndefined();  
         done();
-    })  */
-})
-})
+    })  
+});
+

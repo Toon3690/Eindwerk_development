@@ -6,6 +6,9 @@ const DatabaseHelper = require('./utils/DatabaseHelper');
 const port = 3100;
 
 const values = require("../src/data");
+const {
+    cpuUsage
+} = require("process");
 
 
 const pg = require('knex')({
@@ -81,41 +84,61 @@ app.get('/measurements', async (req, res) => {
 app.get('/sessions/:uuid', async (req, res) => {
 
     // check if uuid is valid
-
-    const result = await pg
-        .select('*')
-        .from('sessions')
-        .where({
-            uuid: req.params.uuid
-        });
-    //.where(req.params)
-    if (result) {
-        res.json({
-            res: result
-        })
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
     } else {
-        res.status(400)
+        const result = await pg
+            .select('*')
+            .from('sessions')
+            .where({
+                uuid: req.params.uuid
+            });
+        //.where(req.params)
+        if (result) {
+            res.json({
+                res: result
+            })
+        } else {
+            res.status(404)
+        }
     }
 });
 
 
 app.get('/measurements/:uuid', async (req, res) => {
 
-    // check if uuid is valid
-    const result = await pg
-        .select('*')
-        .from('measurements')
-        .where({
-            uuid: req.params.uuid
-        });
-    //.where(req.params)
-    if (result) {
-        res.json({
-            res: result
-        })
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
     } else {
-        res.status(400)
+        const result = await pg
+            .select('*')
+            .from('measurements')
+            .where({
+                uuid: req.params.uuid
+            })
+            .then((result) => {
+                res.json({
+                    res: result
+                });
+                res.status(200);
+            })
+            .catch((e) => {
+                console.log(e);
+                res.status(404);
+            });
+        //.where(req.params)
+
+        /*         if (result) {
+                    res.json({
+                        res: result
+                    })
+                } else {
+                    res.status(404)
+                } */
     }
+    // check if uuid is valid
+
+
 });
 
 
@@ -163,10 +186,17 @@ app.post('/sessions', async (req, res) => {
  */
 app.post('/measurements', async (req, res) => {
 
+    let uuid;
     // Generate uuid
-    const uuid = Helpers.generateUUID();
+    if(!req.body.uuid){
+         uuid = Helpers.generateUUID();
+    }else{
+         uuid = req.body.uuid
+    }
 
-    const result = await pg
+
+
+        const result = await pg
         .insert({
             uuid: uuid,
             xWaarde: req.body.xWaarde,
@@ -180,7 +210,14 @@ app.post('/measurements', async (req, res) => {
             res.json({
                 uuid: uuid
             });
-        });
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(404).send();
+          });
+   
+    
+
 
     /*     .catch((e) => {
             //console.log(e)
@@ -197,37 +234,45 @@ app.post('/measurements', async (req, res) => {
 
 app.patch('/sessions/:uuid', async (req, res, done) => {
 
-    const result = await pg
-        .update(req.body)
-        .from('sessions')
-        .where({
-            uuid: req.params.uuid
-        })
-        .returning('*')
-    if (result) {
-        res.json({
-            res: result
-        })
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
     } else {
-        res.status(400)
+        const result = await pg
+            .update(req.body)
+            .from('sessions')
+            .where({
+                uuid: req.params.uuid
+            })
+            .returning('*')
+        if (result) {
+            res.json({
+                res: result
+            })
+        } else {
+            res.status(400)
+        }
     }
 })
 
 app.patch('/measurements/:uuid', async (req, res, done) => {
 
-    const result = await pg
-        .update(req.body)
-        .from('measurements')
-        .where({
-            uuid: req.params.uuid
-        })
-        .returning('*')
-    if (result) {
-        res.json({
-            res: result
-        })
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
     } else {
-        res.status(400)
+        const result = await pg
+            .update(req.body)
+            .from('measurements')
+            .where({
+                uuid: req.params.uuid
+            })
+            .returning('*')
+        if (result) {
+            res.json({
+                res: result
+            })
+        } else {
+            res.status(404)
+        }
     }
 })
 
@@ -240,20 +285,55 @@ app.patch('/measurements/:uuid', async (req, res, done) => {
  * @ returns:
  */
 app.delete('/sessions/:uuid', async (req, res) => {
-    const result = await pg
-        .from('sessions')
-        .where({
-            uuid: req.params.uuid
-        })
-        .del('*')
 
-        .then(() => {
-            res.status(200);
-        });
-
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
+    } else {
+        const result = await pg
+            .from('sessions')
+            .where({
+                uuid: req.params.uuid
+            })
+            .del('*')
+        if (result) {
+            res.json({
+                res: result
+            })
+        } else {
+            res.status(404)
+        }
+    }
     //console.log(result);
 });
 
+
+/**
+ * DELETE a session
+ * @params:
+ * @ returns:
+ */
+app.delete('/measurements/:uuid', async (req, res) => {
+
+    if (Helpers.validateUUID(!req.params.uuid)) {
+        res.status(400);
+    } else {
+        const result = await pg
+            .from('measurements')
+            .where({
+                uuid: req.params.uuid
+            })
+            .del('*')
+        if (result) {
+            res.json({
+                res: result
+            })
+        } else {
+            res.status(404)
+        }
+    }
+
+    //console.log(result);
+});
 
 
 module.exports = app, pg;

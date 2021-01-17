@@ -45,8 +45,11 @@ const DatabaseHelper = {
                         const uuid = Helpers.generateUUID();
 
                         await pg.table('sessions').insert([
-                            {uuid, feedback: `good` },
-                            {uuid, feedback: `bad` },
+                            {uuid, feedback: `Good` },
+                            {uuid, feedback: `Bad` },
+                            {uuid, feedback: `Worst` },
+                            {uuid, feedback: `Bend` },
+                            {uuid, feedback: `Not registered` }
                         ]);
                     });
 
