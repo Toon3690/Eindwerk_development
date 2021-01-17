@@ -69,6 +69,10 @@ app.get('/measurements', async (req, res) => {
     }
 });
 
+
+
+
+
 /**
  * Get one session and the data from it
  * @params: uuid
@@ -113,6 +117,7 @@ app.get('/measurements/:uuid', async (req, res) => {
         res.status(400)
     }
 });
+
 
 
 
@@ -184,7 +189,6 @@ app.post('/measurements', async (req, res) => {
 });
 
 
-
 /**
  * PATCH or update session
  * @params: 
@@ -196,6 +200,24 @@ app.patch('/sessions/:uuid', async (req, res, done) => {
     const result = await pg
         .update(req.body)
         .from('sessions')
+        .where({
+            uuid: req.params.uuid
+        })
+        .returning('*')
+    if (result) {
+        res.json({
+            res: result
+        })
+    } else {
+        res.status(400)
+    }
+})
+
+app.patch('/measurements/:uuid', async (req, res, done) => {
+
+    const result = await pg
+        .update(req.body)
+        .from('measurements')
         .where({
             uuid: req.params.uuid
         })
