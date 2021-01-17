@@ -57,7 +57,11 @@ app.get('/sessions', async (req, res) => {
     }
 });
 
-
+/**
+ * Get all the sessions and the data from it
+ * @params: none
+ * @ returns: all the measurements
+ */
 app.get('/measurements', async (req, res) => {
     // for each session: get all values
     const result = await pg
