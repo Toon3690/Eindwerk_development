@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const http = require("http");
+
 const Helpers = require('./utils/helpers.js');
 const DatabaseHelper = require('./utils/DatabaseHelper');
 const port = 3100;
@@ -10,20 +11,8 @@ const {
     cpuUsage
 } = require("process");
 
-
-const pg = require('knex')({
-    client: 'pg',
-    version: '9.6',
-    searchPath: ['knex', 'public'],
-    connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : 'postgres://example:example@localhost:5432/test'
-});
-
-
-DatabaseHelper.initialiseTables();
-
 const app = express();
 http.Server(app);
-
 
 app.use(bodyParser.json());
 app.use(
@@ -33,6 +22,23 @@ app.use(
     })
 );
 
+// Initialise the tables via databasehelper function
+DatabaseHelper.initialiseTables();
+
+
+
+// Connection with database via knex
+const pg = require('knex')({
+    client: 'pg',
+    version: '9.6',
+    searchPath: ['knex', 'public'],
+    connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : 'postgres://example:example@localhost:5432/test'
+});
+
+
+
+
+
 
 
 
@@ -41,10 +47,10 @@ app.use(
 /**
  * Get all the sessions and the data from it
  * @params: none
- * @ returns: all the sessions
+ * @ returns: json or statuscode 400 (Bad request)
  */
 app.get('/sessions', async (req, res) => {
-    // for each session: get all values
+    
     const result = await pg
         .select('*')
         .from('sessions')
@@ -58,12 +64,12 @@ app.get('/sessions', async (req, res) => {
 });
 
 /**
- * Get all the sessions and the data from it
+ * Get all the measurements and the data from it
  * @params: none
- * @ returns: all the measurements
+ * @ returns: json or statuscode 400 (Bad request)
  */
 app.get('/measurements', async (req, res) => {
-    // for each session: get all values
+
     const result = await pg
         .select('*')
         .from('measurements')
@@ -80,10 +86,11 @@ app.get('/measurements', async (req, res) => {
 
 
 
+
 /**
  * Get one session and the data from it
- * @params: uuid
- * @ returns: 1 session
+ * @params: uuid - of the required session
+ * @ returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
  */
 app.get('/sessions/:uuid', async (req, res) => {
 
@@ -96,21 +103,28 @@ app.get('/sessions/:uuid', async (req, res) => {
             .from('sessions')
             .where({
                 uuid: req.params.uuid
-            });
-        //.where(req.params)
-        if (result) {
+            })
+        .then((result) => {
+            res.status(200);
             res.json({
                 res: result
-            })
-        } else {
-            res.status(404)
-        }
+            });
+        })
+        .catch((e) => {
+            console.log(e);
+            res.status(404);
+        });
     }
 });
 
-
+/**
+ * Get one measurement and the data from it
+ * @params: uuid - of the required session
+ * @ returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
+ */
 app.get('/measurements/:uuid', async (req, res) => {
 
+    // check if uuid is valid
     if (Helpers.validateUUID(!req.params.uuid)) {
         res.status(400);
     } else {
@@ -121,31 +135,17 @@ app.get('/measurements/:uuid', async (req, res) => {
                 uuid: req.params.uuid
             })
             .then((result) => {
+                res.status(200);
                 res.json({
                     res: result
                 });
-                res.status(200);
             })
             .catch((e) => {
                 console.log(e);
                 res.status(404);
             });
-        //.where(req.params)
-
-        /*         if (result) {
-                    res.json({
-                        res: result
-                    })
-                } else {
-                    res.status(404)
-                } */
     }
-    // check if uuid is valid
-
-
 });
-
-
 
 
 
@@ -155,50 +155,51 @@ app.get('/measurements/:uuid', async (req, res) => {
 
 /**
  * POST or create a session
- * @params: uuid, handle
- * @ returns: uuid
+ * @params: uuid, feedback
+ * @ returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
  */
 app.post('/sessions', async (req, res) => {
 
-    // Generate uuid
-    const uuid = Helpers.generateUUID();
+    // Make a uuid if not specified
+     let uuid;
+    if(!req.body.uuid){
+         uuid = Helpers.generateUUID();
+    }else{
+         uuid = req.body.uuid
+    } 
 
     const result = await pg
         .insert({
             uuid: uuid,
             feedback: req.body.feedback,
         })
-        .table("sessions")
-        //.returning('*')
+        .into("sessions")
         .then(() => {
             res.status(201);
             res.json({
                 uuid: uuid
             });
-        });
-
-    /*     .catch((e) => {
-            //console.log(e)
+        })
+        .catch((e) => {
+            console.log(e);
             res.status(400);
-        }) */
+        });
 });
 
 /**
  * POST or create measurements
- * @params:
- * @ returns: 
+ * @params: uuid, xWaarde, yWaarde, session_id
+ * @ returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
  */
 app.post('/measurements', async (req, res) => {
 
+    // Make a uuid if not specified
     let uuid;
-    // Generate uuid
     if(!req.body.uuid){
          uuid = Helpers.generateUUID();
     }else{
          uuid = req.body.uuid
     }
-
-
 
         const result = await pg
         .insert({
@@ -208,7 +209,6 @@ app.post('/measurements', async (req, res) => {
             session_id: Helpers.checkPosture(req.body.xWaarde, req.body.yWaarde)
         })
         .table("measurements")
-        //.returning('*')
         .then(() => {
             res.status(201);
             res.json({
@@ -219,27 +219,22 @@ app.post('/measurements', async (req, res) => {
         })
         .catch((e) => {
             console.log(e);
-            res.status(404).send();
-          });
-   
-    
-
-
-    /*     .catch((e) => {
-            //console.log(e)
             res.status(400);
-        }) */
+        });
 });
+
+
+
 
 
 /**
  * PATCH or update session
- * @params: 
- * @ returns: 
+ * @params: uuid 
+ * @ returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
  */
-
 app.patch('/sessions/:uuid', async (req, res, done) => {
 
+    // Check if uuid is valid
     if (Helpers.validateUUID(!req.params.uuid)) {
         res.status(400);
     } else {
@@ -251,6 +246,7 @@ app.patch('/sessions/:uuid', async (req, res, done) => {
             })
             .returning('*')
         if (result) {
+            res.status(201)
             res.json({
                 res: result
             })
@@ -260,8 +256,15 @@ app.patch('/sessions/:uuid', async (req, res, done) => {
     }
 })
 
+
+/**
+ * PATCH or update measurement
+ * @params: uuid 
+ * @ returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
+ */
 app.patch('/measurements/:uuid', async (req, res, done) => {
 
+    // Check if uuid is valid
     if (Helpers.validateUUID(!req.params.uuid)) {
         res.status(400);
     } else {
@@ -273,9 +276,10 @@ app.patch('/measurements/:uuid', async (req, res, done) => {
             })
             .returning('*')
         if (result) {
+            res.status(201)
             res.json({
                 res: result
-            })
+            })     
         } else {
             res.status(404)
         }
@@ -287,11 +291,12 @@ app.patch('/measurements/:uuid', async (req, res, done) => {
 
 /**
  * DELETE a session
- * @params:
- * @ returns:
+ * @params: uuid
+ * @ returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
  */
 app.delete('/sessions/:uuid', async (req, res) => {
 
+    // Check if uuid is valid
     if (Helpers.validateUUID(!req.params.uuid)) {
         res.status(400);
     } else {
@@ -302,24 +307,26 @@ app.delete('/sessions/:uuid', async (req, res) => {
             })
             .del('*')
         if (result) {
+            res.status(205)
             res.json({
                 res: result
             })
+            
         } else {
             res.status(404)
         }
     }
-    //console.log(result);
 });
 
 
 /**
  * DELETE a session
- * @params:
- * @ returns:
+ * @params: uuid
+ * @ returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
  */
 app.delete('/measurements/:uuid', async (req, res) => {
 
+    // Check if uuid is valid
     if (Helpers.validateUUID(!req.params.uuid)) {
         res.status(400);
     } else {
@@ -330,15 +337,15 @@ app.delete('/measurements/:uuid', async (req, res) => {
             })
             .del('*')
         if (result) {
+            res.status(205)
             res.json({
                 res: result
             })
+            
         } else {
             res.status(404)
         }
     }
-
-    //console.log(result);
 });
 
 

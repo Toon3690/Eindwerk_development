@@ -1,6 +1,6 @@
 const Helpers = require('./helpers.js');
 
-
+// Connection with database via knex
 const pg = require('knex')({
     client: 'pg',
     version: '9.6',
@@ -10,6 +10,8 @@ const pg = require('knex')({
 
 const DatabaseHelper = {
     async initialiseTables() {
+
+        // Create measurements table
         await pg.schema.hasTable('measurements').then(async (exists) => {
             if (!exists) {
                 await pg.schema
@@ -30,7 +32,7 @@ const DatabaseHelper = {
             }
         });
 
-
+        // Create table sessions and add the 5 basic sessions
         await pg.schema.hasTable('sessions').then(async (exists) => {
             if (!exists) {
                 await pg.schema
