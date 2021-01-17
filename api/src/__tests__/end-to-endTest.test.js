@@ -29,20 +29,12 @@ describe('test end-to-end sessions', () => {
     test('if post request succeeds', async (done) =>{
         const response = await requestETE.post('/sessions').send({feedback: "wonderful"});
         expect(response.status).toBe(201)
-        expect(response.body).toHaveProperty("uuid")
+        expect(response.body).toHaveProperty("uuid", response.body.uuid)
         ETE_uuid = response.body.uuid
 
         console.log(ETE_uuid);
         done();
     })
-
-/*    test('if it exists', async (done) =>{
-        //console.log(DatabaseHelperETE);
-        //const response = await DatabaseHelperETE.select('*').table('sessions').where({ uuid: ETE_uuid})
-        //expect(response.length).toBeGreaterThan(0);
-        //expect(response[0].toHaveProperty('uuid', ETE_uuid));
-        done();
-    }) */
 
     test('if get request succeeds', async (done) =>{
         const response = await requestETE.get(`/sessions/${ETE_uuid}`).send(ETE_uuid)
@@ -60,13 +52,6 @@ describe('test end-to-end sessions', () => {
         done();
     })
 
-/*     test('if patch changed', async (done) =>{
-        //const response = await db.pg.select('*').table('sessions').where({ uuid: ETE_uuid})
-        //expect(response.length).toBeGreaterThan(0);
-        //expect(response[0].toHaveProperty('...');
-        done();
-    })
-*/
     test('if get request has change', async (done) =>{
         const response = await requestETE.get(`/sessions/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
@@ -76,23 +61,18 @@ describe('test end-to-end sessions', () => {
     })  
 
     // DELETE
-    /*s test('if delete request succeeds', async (done) =>{
+     test('if delete request succeeds', async (done) =>{
         const response = await requestETE.delete(`/sessions/${ETE_uuid}`).send()
         expect(response.status).toBe(200)
         done();
     })
 
-    test('if session is deleted', async (done) =>{
-        //const response = await DatabaseHelperETE.select('*').table('sessions').where({ uuid: ETE_uuid})
-        //expect(response.length).toBe(0);
-        done();
-    })
-
     test('if GET request fails', async (done) =>{
         const response = await requestETE.get(`/sessions/${ETE_uuid}`).send()
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(200);
+        expect(response.body.res[0]).toBeUndefined();  
         done();
-    })  */
+    })  
 });
 
 describe('test end-to-end measurements', () => {

@@ -208,8 +208,10 @@ app.post('/measurements', async (req, res) => {
         .then(() => {
             res.status(201);
             res.json({
-                uuid: uuid
+                uuid: uuid,
+                xWaarde: req.body.xWaarde
             });
+            res.send();
         })
         .catch((e) => {
             console.log(e);
