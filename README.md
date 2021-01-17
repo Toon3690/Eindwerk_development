@@ -1,6 +1,8 @@
 # Eindwerk_development
 
-Check if you got an ergonomic working pose behind your laptop. Based on the position of the nose, this will be decided.
+Check if you got an ergonomic working pose behind your laptop. This will be decided by the position of your nose in front of the webcam.
+
+## Why is it useful
 
 ## Getting Started
 
@@ -58,25 +60,14 @@ End with an example of getting some data out of the system or using it for a lit
 
 Navigate back to the api folder `cd api` and run the test `npm test`
 
-### Break down into end to end tests
 
-Explain what these tests test and why
+## Where can i find help
 
-```
-Give an example
-```
+## Project status
 
-### And coding style tests
+## Github flow
 
-Explain what these tests test and why
 
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
@@ -104,9 +95,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
