@@ -33,7 +33,7 @@ const pg = require('knex')({
 /**
  * Get all the sessions and the data from it
  * @params: none
- * @ returns: json or statuscode 400 (Bad request)
+ * @returns: json or statuscode 400 (Bad request)
  */
 app.get('/sessions', async (req, res) => {
     
@@ -52,7 +52,7 @@ app.get('/sessions', async (req, res) => {
 /**
  * Get all the measurements and the data from it
  * @params: none
- * @ returns: json or statuscode 400 (Bad request)
+ * @returns: json or statuscode 400 (Bad request)
  */
 app.get('/measurements', async (req, res) => {
 
@@ -73,7 +73,7 @@ app.get('/measurements', async (req, res) => {
 /**
  * Get one session and the data from it
  * @params: uuid - of the required session
- * @ returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
+ * @returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
  */
 app.get('/sessions/:uuid', async (req, res) => {
 
@@ -103,7 +103,7 @@ app.get('/sessions/:uuid', async (req, res) => {
 /**
  * Get one measurement and the data from it
  * @params: uuid - of the required session
- * @ returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
+ * @returns: json and statuscode 200 (OK) or statuscode 400 (Bad Request) or 404 (Not Found)
  */
 app.get('/measurements/:uuid', async (req, res) => {
 
@@ -136,7 +136,7 @@ app.get('/measurements/:uuid', async (req, res) => {
 /**
  * POST or create a session
  * @params: uuid, feedback
- * @ returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
+ * @returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
  */
 app.post('/sessions', async (req, res) => {
 
@@ -169,7 +169,7 @@ app.post('/sessions', async (req, res) => {
 /**
  * POST or create measurements
  * @params: uuid, xWaarde, yWaarde, session_id
- * @ returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
+ * @returns: json with uuid or statuscode 201 (Created) or 400 (Bad Request)
  */
 app.post('/measurements', async (req, res) => {
 
@@ -210,7 +210,7 @@ app.post('/measurements', async (req, res) => {
 /**
  * PATCH or update session
  * @params: uuid 
- * @ returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
+ * @returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
  */
 app.patch('/sessions/:uuid', async (req, res, done) => {
 
@@ -240,7 +240,7 @@ app.patch('/sessions/:uuid', async (req, res, done) => {
 /**
  * PATCH or update measurement
  * @params: uuid 
- * @ returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
+ * @returns: json and statuscode 201 (Created) or 400 (Bad Request) or 404(Not Found)
  */
 app.patch('/measurements/:uuid', async (req, res, done) => {
 
@@ -272,7 +272,7 @@ app.patch('/measurements/:uuid', async (req, res, done) => {
 /**
  * DELETE a session
  * @params: uuid
- * @ returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
+ * @returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
  */
 app.delete('/sessions/:uuid', async (req, res) => {
 
@@ -302,7 +302,7 @@ app.delete('/sessions/:uuid', async (req, res) => {
 /**
  * DELETE a session
  * @params: uuid
- * @ returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
+ * @returns: json and statuscode 205 (Reset content) or 400 (Bad Request) or 404(Not Found)
  */
 app.delete('/measurements/:uuid', async (req, res) => {
 
