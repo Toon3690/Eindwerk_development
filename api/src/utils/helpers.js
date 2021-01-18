@@ -8,16 +8,19 @@ const {
 
 const Helpers = {
 
+  // Generate a uuid timebased
   generateUUID: () => {
     const uuid = uuidv1();
     return uuid;
   },
 
+  // Generate a uuid at random
   generateUUID2: () => {
     const uuid = uuidv4();
     return uuid;
   },
 
+  // Check if the uuid is actually a valid uuid
   validateUUID: (uuid) => {
     if (uuid == undefined) {
       return false
@@ -28,9 +31,9 @@ const Helpers = {
         return false
       }
     }
-
   },
 
+  // returns number based on the position of x and y (should be edited, maybe working with a circle)
   checkPosture: (xWaarde, yWaarde) => {
     if (xWaarde < 320 && xWaarde >= 0 && yWaarde < 240 && yWaarde >= 0) {
       return 1
@@ -44,7 +47,6 @@ const Helpers = {
       return 5
     }
   },
-
 };
 
 module.exports = Helpers;

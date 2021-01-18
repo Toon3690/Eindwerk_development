@@ -3,14 +3,6 @@ let poseNet;
 let pose;
 let skeleton;
 
-let nn;
-let poseLabel = "1";
-let correctLabel = 1;
-
-let correctPosition;
-let finished;
-var points = 20;
-
 function setup() {
   createCanvas(640, 480);
   video = createCapture(VIDEO);
@@ -23,12 +15,12 @@ function setup() {
   poseNet = ml5.poseNet(video, optionsForPoseNet, modelLoaded);
   poseNet.on('pose', gotPoses);
 
-//model is geladen
+// model is geladen
 function modelLoaded() {
   console.log('poseNet ready');
 }
 
-//pose en skeleton zetten
+// pose en skeleton zetten
 function gotPoses(poses) {
   if (poses.length > 0) {
     pose = poses[0].pose;
@@ -38,10 +30,8 @@ function gotPoses(poses) {
 
 function classifyPose() {
   if (pose) {
-
     let xWaarde = pose.keypoint[0].position.x;
     let yWaarde = pose.keypoint[0].position.y;
-
   } else {
     setTimeout(classifyPose, 50);
   }

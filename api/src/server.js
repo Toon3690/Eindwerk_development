@@ -4,12 +4,6 @@ const http = require("http");
 
 const Helpers = require('./utils/helpers.js');
 const DatabaseHelper = require('./utils/DatabaseHelper');
-const port = 3100;
-
-const values = require("../src/data");
-/* const {
-    cpuUsage
-} = require("process"); */
 
 const app = express();
 http.Server(app);
@@ -22,10 +16,9 @@ app.use(
     })
 );
 
+
 // Initialise the tables via databasehelper function
 DatabaseHelper.initialiseTables();
-
-
 
 // Connection with database via knex
 const pg = require('knex')({
@@ -34,13 +27,6 @@ const pg = require('knex')({
     searchPath: ['knex', 'public'],
     connection: process.env.PG_CONNECTION_STRING ? process.env.PG_CONNECTION_STRING : 'postgres://example:example@localhost:5432/test'
 });
-
-
-
-
-
-
-
 
 
 
@@ -81,9 +67,6 @@ app.get('/measurements', async (req, res) => {
         res.send(400)
     }
 });
-
-
-
 
 
 
@@ -146,9 +129,6 @@ app.get('/measurements/:uuid', async (req, res) => {
             });
     }
 });
-
-
-
 
 
 

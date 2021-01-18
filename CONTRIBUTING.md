@@ -1,6 +1,6 @@
 # Contributing guidelines
 
-Hi! You made it to the PoseCorrecter! We are constantly improving our api and all your feedback is welcome. Here are the guidelines if you want to discuss, report, propose, etc. something. With these guidelines we can continue to provide the api with the highest quality. Thanks! Please also refer to our Code of conduct.
+Hi! You made it to the PoseCorrecter! We are constantly improving our api and all your feedback is welcome. Here are the guidelines if you want to discuss, report, propose, etc. something. With these guidelines we can continue to provide the api with the highest quality. Thanks! Please also refer to our [Code of conduct](https://github.com/Toon3690/PoseCorrecter/blob/main/CODE-OF-CONDUCT.md).
 
 ## Report bugs
 
@@ -20,7 +20,7 @@ npm version:
 ```
 ### Examples of good and bad requests:
 
-- Good: Getting error "" when trying to call endpoint ""
+- Good: Getting error "..." when trying to call endpoint "..."
 - Bad: Endpoint does not work
 
 ## Suggest new features
@@ -29,9 +29,9 @@ npm version:
 * Declare why useful
 
 ## Guidelines for development
-* Access the database via [TablePlus](https://tableplus.com/)
+* It is possible to access the database via [TablePlus](https://tableplus.com/)
 * Verbose-level 3
-* We use the Github Flow method
+* We use the [Github flow method](https://guides.github.com/introduction/flow/)
 * Make use of the Changelog, more information [here](https://changelog.md/).
 
 

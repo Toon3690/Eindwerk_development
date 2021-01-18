@@ -1,6 +1,6 @@
 # PoseCorrecter
 
-Check if you got an ergonomic working pose behind your laptop. This will be decided by the position of your nose in front of the webcam.
+Check if you got an ergonomic working pose behind your laptop. This will be decided by the position of your nose in front of the webcam. You could use the Posecorrector to send notfications when you aren't sitting in the correct pose.
 <p>&nbsp;</p>
 
 ## Why is it useful
@@ -74,7 +74,7 @@ The project is still under construction.
 <p>&nbsp;</p>
 
 ## Github flow
-We make use of the Github Flow. This is because it is a small project, currently being worked on by one person. Also because we can deploy it so much faster. All the changes happen through pull requests so others can review it.
+We make use of the Github Flow. This is because it is a small project, currently being worked on by one person. Also because we can deploy it so much faster. Besides it is much faster to fix bugs or even implement features. All the changes happen through pull requests so others can review it.
 If you want to work on the project, get familiar with the [Github flow](https://guides.github.com/introduction/flow/).
 
 <p>&nbsp;</p>

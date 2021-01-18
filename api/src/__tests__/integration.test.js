@@ -6,7 +6,7 @@ const request = supertest(app);
 
 const UUID = Helpers.generateUUID();
 
-//test sessions
+//Test sessions
 describe('GET /measurements endpoint', () => {
 
     test('check if response is 200 (OK)', async (done) => {
@@ -40,7 +40,7 @@ describe('GET /measurements endpoint', () => {
     });
 });
 
-
+//Test measurements
 describe('POST /measurements endpoint', () => {
     test('check if response is 201 (Created)', async (done) => {
         try {

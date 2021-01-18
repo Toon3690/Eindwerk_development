@@ -17,11 +17,9 @@ const appETE = require('../server');
 const requestETE = supertestETE(appETE);
 const HelpersETE = require('../utils/helpers');
 
-const DatabaseHelperETE = require('../utils/DatabaseHelper');
-
 let ETE_uuid;
 
-//jest.setTimeout(5001);
+
 
 describe('test end-to-end sessions', () => {
 
@@ -40,8 +38,6 @@ describe('test end-to-end sessions', () => {
         done();
     })
 
-
-
     test('Update the session and check if PATCH succeeds', async (done) =>{
         const response = await requestETE.patch(`/sessions/${ETE_uuid}`).send({ feedback: "disaster" })
         expect(response.status).toBe(201)
@@ -58,8 +54,7 @@ describe('test end-to-end sessions', () => {
         done();
     })  
 
-    // DELETE
-/*      test('DELETE the session and check if succeeds', async (done) =>{
+      test('DELETE the session and check if succeeds', async (done) =>{
         const response = await requestETE.delete(`/sessions/${ETE_uuid}`).send()
         expect(response.status).toBe(205)
         done();
@@ -71,8 +66,10 @@ describe('test end-to-end sessions', () => {
         expect(response.body.res[0]).toBeUndefined();  
         console.log("hier ook geraakt");
         done();
-    })   */
+    })   
 });
+
+
 
 describe('test end-to-end measurements', () => {
 
