@@ -7,9 +7,9 @@ const DatabaseHelper = require('./utils/DatabaseHelper');
 const port = 3100;
 
 const values = require("../src/data");
-const {
+/* const {
     cpuUsage
-} = require("process");
+} = require("process"); */
 
 const app = express();
 http.Server(app);

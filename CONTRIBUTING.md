@@ -1,13 +1,15 @@
 # Contributing guidelines
 
-// intro
+Hi! You made it to the PoseCorrecter! We are constantly improving our api and all your feedback is welcome. Here are the guidelines if you want to discuss, report, propose, etc. something. With these guidelines we can continue to provide the api with the highest quality. Thanks! Please also refer to our Code of conduct.
 
 ## Report bugs
 
 * Open an issue on Github, with a bug tag
 * Set application to VERBOSE in your .env file
 * Include your ERROR logs
-* Explain the setup
+* Explain the setup, be specific
+* What you expected would happen
+* What actually happens
 * Include the following:
 
 ```
@@ -22,29 +24,25 @@ npm version:
 - Bad: Endpoint does not work
 
 ## Suggest new features
-* Open a feature request on gtihub with enheacncemt label
+* Open a feature request on github on the [issues page](https://github.com/Toon3690/PoseCorrecter/issues) with the enhancement label
+* Explain what you want to do
 * Declare why useful
 
 ## Guidelines for development
-* DB dev
-* Verbose 3
+* Access the database via [TablePlus](https://tableplus.com/)
+* Verbose-level 3
+* We use the Github Flow method
+* Make use of the Changelog, more information [here](https://changelog.md/).
 
-........
 
-What kind of tests need to be here
-
-Mention Development db
-
-changelog( how to)
 
 ## Roadmap and vision
 
-I envision ...
-
-mention forum
-Discord
+I envision that this project will get more advanced and correct. First the direct connection with Posenet so we don't need to use dummy data. I hope our community will grow and people become aware of their correct working pose, especially now when everyone is working from home.
 
 ## Get in touch
 
-mail, open issue, 
+* If you got a question, open an [issue on Github](https://github.com/Toon3690/PoseCorrecter/issues) (use the correct label)
+* For not so urgent problems you can go to the [discussion tab](https://github.com/Toon3690/PoseCorrecter/discussions) on Github.
+* You can always contact me by mail at: toon.raskin@hotmail.com
 
