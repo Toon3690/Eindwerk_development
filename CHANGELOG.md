@@ -2,6 +2,14 @@
 Changes are documented here, with the last made changes on top.
 
 
+## V 1.2.0
+### Extra
+```
+-  Deploy.js
+-  index.html
+```
+
+
 ## V 1.1.0
 ### Extra
 ```

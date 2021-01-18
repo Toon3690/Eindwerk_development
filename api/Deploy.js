@@ -39,7 +39,8 @@ function gotPoses(poses) {
 function classifyPose() {
   if (pose) {
 
-
+    let xWaarde = pose.keypoint[0].position.x;
+    let yWaarde = pose.keypoint[0].position.y;
 
   } else {
     setTimeout(classifyPose, 50);
