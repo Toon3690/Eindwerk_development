@@ -1,8 +1,11 @@
-# Eindwerk_development
+# PoseCorrecter
 
 Check if you got an ergonomic working pose behind your laptop. This will be decided by the position of your nose in front of the webcam.
+<p>&nbsp;</p>
 
 ## Why is it useful
+More and more people have all sorts of pain because of the pose they take-on when working behind their computer. This api would be able to send notifications when you unconciously (or conciously) would take on a bad sitting position.
+<p>&nbsp;</p>
 
 ## Getting Started
 
@@ -18,9 +21,9 @@ Docker-compose build
 Docker-compose up
 ```
 
-### Endpoints
+### Endpoints:
 
-Access the endpoints like this: 
+Access the endpoints like this:
 
 - `GET /sessions` Get all the sessions, these are the feedback on your pose
 - `GET /measurements` Get all the measurements, the positions of your nose with the id of the session
@@ -37,36 +40,38 @@ Access the endpoints like this:
 - `DELETE /sessions/:uuid` Delete a specific session by uuid
 - `DELETE /measurements/:uuid` Delete a specific measurement by uuid
 
+### Sessions
+The sessions contain the information if a position is good or bad (feedback). They would be linked to the measurements.
+### Measurements
+The measurements contain the information about the x and y position of the nose in front of the screen. They also contain a session_id to know if the position is good or bad.
 
-<!-- ### Installing
 
-A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
 
-```
-Give the example
-```
+<p>&nbsp;</p>
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo -->
 
 ## Running the tests
 
 Navigate back to the api folder `cd api` and run the test `npm test`
-
+<p>&nbsp;</p>
 
 ## Where can i find help
 
+use the issue and discussion tab if you would like to receive help. More information can be found in the Contributing guidelines.
+
+<p>&nbsp;</p>
+
 ## Project status
+The project is still under construction.
+
+<p>&nbsp;</p>
 
 ## Github flow
+We make use of the Github Flow. This is because it is a small project, currently being worked on by one person. Also because we can deploy it so much faster. All the changes happen through pull requests so others can review it.
+If you want to work on the project, get familiar with the [Github flow](https://guides.github.com/introduction/flow/).
 
+<p>&nbsp;</p>
 
 
 ## Built With
@@ -79,17 +84,21 @@ Navigate back to the api folder `cd api` and run the test `npm test`
 * [Fork](https://git-fork.com/)
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md]() for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
+<p>&nbsp;</p>
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+## Changelog
+
+In the Changelog all the made changes are stored.
+
+<p>&nbsp;</p>
 
 ## Authors
 
 * **Toon Raskin** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 
-
+<p>&nbsp;</p>
 
 ## License
 

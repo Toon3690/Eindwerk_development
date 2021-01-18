@@ -40,6 +40,10 @@ npm version:
 
 I envision that this project will get more advanced and correct. First the direct connection with Posenet so we don't need to use dummy data. I hope our community will grow and people become aware of their correct working pose, especially now when everyone is working from home.
 
+There are also a lot of other possibilities for this. Think of alerting someone when their hand is on their face (for people who pick pimples for example). Or to alert people when their head is too much tilted and so on.
+
+
+
 ## Get in touch
 
 * If you got a question, open an [issue on Github](https://github.com/Toon3690/PoseCorrecter/issues) (use the correct label)
