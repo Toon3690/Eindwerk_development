@@ -10,7 +10,7 @@ jobs:
        - checkout
 
        - run: cd api && npm ci
-       - run: cd api && npm run test
+       - run: cd api && npm test
 
        - setup_remote_docker
       
